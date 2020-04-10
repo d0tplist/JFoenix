@@ -154,13 +154,17 @@ public class JFXTextFieldSkin<T extends TextField & IFXLabelFloatControl> extend
 
         try {
             Field field = ReflectionHelper.getField(TextFieldSkin.class, "promptNode");
+
             if (field != null) {
                 Object oldValue = field.get(this);
                 if (oldValue != null) {
                     textPane.getChildren().remove(oldValue);
                 }
                 field.set(this, promptText);
+            } else {
+                textPane.getChildren().remove(0);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
