@@ -1,6 +1,7 @@
 apply plugin: 'osgi'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'java-library'
+apply plugin: 'maven-publish'
 
 apply from: rootProject.file('gradle/license.gradle')
 
@@ -10,8 +11,21 @@ ext {
     pomFilePath = "${project.projectDir}/tmp/pom.xml"
     pomFile = file(pomFilePath)
 }
+
 configurations {
     pom
+}
+
+group = 'com.jfoenix'
+version = '10.0'
+description = 'material'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
 }
 
 task sourcesJar(type: Jar) {

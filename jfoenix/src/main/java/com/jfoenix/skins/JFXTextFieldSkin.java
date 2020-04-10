@@ -106,6 +106,11 @@ public class JFXTextFieldSkin<T extends TextField & IFXLabelFloatControl> extend
 
 
     private void updateTextPos() {
+
+        if (textNode == null) {
+            return;
+        }
+
         double textWidth = textNode.getLayoutBounds().getWidth();
         final double promptWidth = promptText == null ? 0 : promptText.getLayoutBounds().getWidth();
         switch (getSkinnable().getAlignment().getHpos()) {
@@ -149,11 +154,13 @@ public class JFXTextFieldSkin<T extends TextField & IFXLabelFloatControl> extend
 
         try {
             Field field = ReflectionHelper.getField(TextFieldSkin.class, "promptNode");
-            Object oldValue = field.get(this);
-            if (oldValue != null) {
-                textPane.getChildren().remove(oldValue);
+            if (field != null) {
+                Object oldValue = field.get(this);
+                if (oldValue != null) {
+                    textPane.getChildren().remove(oldValue);
+                }
+                field.set(this, promptText);
             }
-            field.set(this, promptText);
         } catch (Exception e) {
             e.printStackTrace();
         }
